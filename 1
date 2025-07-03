@@ -1,0 +1,23 @@
+# 1. 初始化 Vertex AI
+import vertexai
+from vertexai.generative_models import GenerativeModel, GenerationConfig
+
+# 請填入你的 GCP 專案 ID 和地區
+vertexai.init(project="your-project-id", location="your-region")  # e.g., "us-central1"
+
+# 2. 建立 Gemini 模型
+model = GenerativeModel("gemini-pro")
+
+# 3. 定義可以自訂 temperature 和 max_tokens 的回答函式
+def generate_answer(prompt, temperature=0.7, max_tokens=512):
+    config = GenerationConfig(
+        temperature=temperature,
+        max_output_tokens=max_tokens,
+    )
+    response = model.generate_content(prompt, generation_config=config)
+    return response.text
+
+# 4. 使用示範
+prompt = "Explain the role of attention in transformer models."
+answer = generate_answer(prompt, temperature=0.5, max_tokens=300)
+print("Answer:\n", answer)

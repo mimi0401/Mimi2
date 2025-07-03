@@ -1,0 +1,27 @@
+# 1. 初始化 Vertex AI
+import vertexai
+from vertexai.generative_models import GenerativeModel, GenerationConfig
+
+vertexai.init(project="your-project-id", location="your-region")
+model = GenerativeModel("gemini-pro")
+
+# 2. 定義函式：可調 temperature 和 max_tokens
+def generate_answer(prompt, temperature=0.5, max_tokens=100):
+    config = GenerationConfig(
+        temperature=temperature,
+        max_output_tokens=max_tokens,
+    )
+    response = model.generate_content(prompt, generation_config=config)
+    return response.text
+
+# 3. 測試不同 max_tokens 的輸出
+def experiment_with_token_limits(prompt):
+    token_limits = [20, 50, 200]
+    for limit in token_limits:
+        print(f"\n=== Max Tokens: {limit} ===")
+        answer = generate_answer(prompt, temperature=0.5, max_tokens=limit)
+        print(answer)
+
+# 4. 執行測試
+final_prompt = "Explain how climate change affects global agriculture."
+experiment_with_token_limits(final_prompt)
